@@ -71,10 +71,6 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     sqlDf.show()
   }
 
-  test("have the same elements") {
-    assert(finalDf.collect().sameElements(sqlDf.collect()))
-  }
-
   test("timeUsageSummaryTyped") {
     assert(summaryDs.head.getClass.getName === "timeusage.TimeUsageRow")
     assert(summaryDs.head.other === 8.75)
@@ -86,5 +82,16 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     assert(finalDs.count === 2 * 2 * 3)
     assert(finalDs.head.primaryNeeds === 12.3)
     assert(finalDs.head.primaryNeeds === 12.3)
+  }
+
+  test("have the same elements") {
+    val element1 = finalDf.collect()
+    val element2 = sqlDf.collect()
+    val element3 = finalDs.toDF().collect()
+
+    assert(element1.sameElements(element2))
+    element1.foreach(println)
+    element3.foreach(println)
+    assert(element1.sameElements(element3))
   }
 }

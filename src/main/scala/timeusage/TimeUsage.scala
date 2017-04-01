@@ -231,6 +231,9 @@ object TimeUsage {
        |ORDER BY working, sex, age
     """.stripMargin
 
+
+  def roundTo1Decimal(d: Double) = (d * 10).round / 10d
+
   /**
     * @return A `Dataset[TimeUsageRow]` from the “untyped” `DataFrame`
     * @param timeUsageSummaryDf `DataFrame` returned by the `timeUsageSummary` method
@@ -266,8 +269,6 @@ object TimeUsage {
   def timeUsageGroupedTyped(summed: Dataset[TimeUsageRow]): Dataset[TimeUsageRow] = {
     import org.apache.spark.sql.expressions.scalalang.typed.avg
 
-    def roundTo1Decimal(d: Double) = (d * 10).round / 10d
-
     summed
       .groupByKey(row => (row.working, row.sex, row.age))
       .agg(
@@ -276,7 +277,7 @@ object TimeUsage {
         avg(_.other)
       )
       .map {
-        case ((age, sex, working), primaryNeeds, work, other) => TimeUsageRow(
+        case ((working, sex, age), primaryNeeds, work, other) => TimeUsageRow(
           working = working,
           sex = sex,
           age = age,
