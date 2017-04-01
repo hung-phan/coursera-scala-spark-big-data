@@ -197,13 +197,13 @@ object TimeUsage {
     */
   def timeUsageGrouped(summed: DataFrame): DataFrame = {
     summed
-      .groupBy($"age", $"sex", $"working")
+      .groupBy($"working", $"sex", $"age")
       .agg(
         round(avg($"primaryNeeds"), 1).as("primaryNeeds"),
         round(avg($"work"), 1).as("work"),
         round(avg($"other"), 1).as("other")
       )
-      .orderBy($"age", $"sex", $"working")
+      .orderBy($"working", $"sex", $"age")
   }
 
   /**
@@ -227,8 +227,8 @@ object TimeUsage {
        |  ROUND(AVG(work), 1) as work,
        |  ROUND(AVG(other), 1) as other
        |FROM $viewName
-       |GROUP BY age, sex, working
-       |ORDER BY age, sex, working
+       |GROUP BY working, sex, age
+       |ORDER BY working, sex, age
     """.stripMargin
 
   /**
@@ -269,7 +269,7 @@ object TimeUsage {
     def roundTo1Decimal(d: Double) = (d * 10).round / 10d
 
     summed
-      .groupByKey(row => (row.age, row.sex, row.working))
+      .groupByKey(row => (row.working, row.sex, row.age))
       .agg(
         avg(_.primaryNeeds),
         avg(_.work),
@@ -285,7 +285,7 @@ object TimeUsage {
           other = roundTo1Decimal(other)
         )
       }
-      .orderBy($"age", $"sex", $"working")
+      .orderBy($"working", $"sex", $"age")
   }
 }
 
