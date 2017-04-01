@@ -90,8 +90,6 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     val element3 = finalDs.toDF().collect()
 
     assert(element1.sameElements(element2))
-    element1.foreach(println)
-    element3.foreach(println)
     assert(element1.sameElements(element3))
   }
 }
