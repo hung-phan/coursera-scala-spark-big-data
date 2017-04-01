@@ -71,6 +71,10 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     sqlDf.show()
   }
 
+  test("have the same elements") {
+    assert(finalDf.collect().sameElements(sqlDf.collect()))
+  }
+
   test("timeUsageSummaryTyped") {
     assert(summaryDs.head.getClass.getName === "timeusage.TimeUsageRow")
     assert(summaryDs.head.other === 8.75)
