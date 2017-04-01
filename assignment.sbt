@@ -1,2 +1,2 @@
 course := "bigdata"
-assignment := "stackoverflow"
+assignment := sys.props.getOrElse("assignment", default = "timeusage")

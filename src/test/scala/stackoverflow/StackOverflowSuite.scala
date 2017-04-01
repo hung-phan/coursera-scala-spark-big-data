@@ -34,5 +34,7 @@ class StackOverflowSuite extends FunSuite with BeforeAndAfterAll {
     assert(instantiatable, "Can't instantiate a StackOverflow object")
   }
 
-
+  test("main should work") {
+    StackOverflow.main(null)
+  }
 }
